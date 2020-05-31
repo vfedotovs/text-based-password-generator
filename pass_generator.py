@@ -1,24 +1,17 @@
 import random
 
 
+spec_chars = ['!', '"', '£', '$', '%', '&', '*', '(', ')', '_', '+']
+numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
+           'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+
 def gen_random_index_list(count: int, range_len: int) -> list:
     index_list = []
     for i in range(1, count):
         x = random.randrange(1, range_len)
         index_list.append(x)
-    # print(index_list)
     return index_list
-
-
-letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
-           'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
-numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-spec_chars = ['!', '"', '£', '$', '%', '&', '*', '(', ')', '_', '+']
-
-# for debug
-print("lett len:", len(letters))
-print("num len:", len(numbers))
-print("spec len:", len(spec_chars))
 
 
 def collect_reqs() -> list:
@@ -44,7 +37,6 @@ def collect_reqs() -> list:
         req_list.append(True)
     else:
         req_list.append(False)
-
     return req_list
 
 
@@ -65,7 +57,7 @@ def gen_pass(sect_len: int,
              enabled_letters: bool,
              enabled_numbers: bool,
              enabled_spec_chars: bool) -> str:
-    print("section len:", sect_len)  # for debugging
+    # print("section len:", sect_len)  # for debugging
     final_pass = []
     if enabled_numbers:
         num_idx_list = gen_random_index_list(sect_len + 1, len(numbers))
