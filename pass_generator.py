@@ -17,13 +17,19 @@ def gen_random_index_list(count: int, range_len: int) -> list:
 def collect_reqs() -> list:
     req_list = []
     pwd_len = int(input("Please chose password lenght:"))
-    include_letter = str(input("Do you want include letters (y/n)?:"))
+    include_letter_up = str(input("Do you want include upper case letters (y/n)?:"))
+    include_letter_low = str(input("Do you want include lower case letters (y/n)?:"))
     include_nums = str(input("Do you want include numbers (y/n)?:"))
     include_specials = str(
         input("Do you want include special characters (y/n)?:"))
 
     req_list.append(pwd_len)
-    if include_letter == 'y':
+    if include_letter_up == 'y':
+        req_list.append(True)
+    else:
+        req_list.append(False)
+
+    if include_letter_low == 'y':
         req_list.append(True)
     else:
         req_list.append(False)
@@ -37,39 +43,58 @@ def collect_reqs() -> list:
         req_list.append(True)
     else:
         req_list.append(False)
-    return req_list
+    #            pass_len , up, low, nums, special                    
+    return req_list  # [8, True, True, True, True]
 
 
-def calculate_section_len(reqs: list) -> int:
-    """ if letters x2 nums x 1 and specials x 1"""
-    tot_len = reqs[0]
-    sum = 0
-    if reqs[1]:
-        sum += 2  # for upper and lower case
-    if reqs[2]:
-        sum += 1
-    if reqs[3]:
-        sum += 1
-    return tot_len // sum
-
-
-def gen_pass(sect_len: int,
-             enabled_letters: bool,
-             enabled_numbers: bool,
-             enabled_spec_chars: bool) -> str:
-    # print("section len:", sect_len)  # for debugging
+def gen_pass(requirements: list) -> str:
+    sect_count = 0
+    
     final_pass = []
+    enabled_letters_up = requirements[1]
+    enabled_letters_low = requirements[2] 
+    enabled_numbers = requirements[3]
+    enabled_spec_chars = requirements[4] 
+    
+    if enabled_letters_up:
+        sect_count += 1
+    if enabled_letters_low: 
+        sect_count += 1
+    if enabled_numbers:
+        sect_count += 1
+    if enabled_spec_chars:
+        sect_count += 1
+    
+    if requirements[0] % sect_count == 0:
+        sect_len = int(requirements[0] / sect_count)
+        print(sect_len)
+    else:
+        if requirements[0] - sect_count > 0:
+            sect_len = int(requirements[0] / sect_count)
+            diff = requirements[0] % sect_count
+
+            if diff > 0:
+               let_idx_list = gen_random_index_list(diff - 1, len(letters))
+               for index in let_idx_list:
+                   final_pass.append(letters[index])
+        
+        if requirements[0] - sect_count < 0:
+            print("Error: password lengh < requirements selected") 
+            
+    
+
+    # print("section len:", sect_len)  # for debugging
     if enabled_numbers:
         num_idx_list = gen_random_index_list(sect_len + 1, len(numbers))
         for index in num_idx_list:
             final_pass.append(numbers[index])
 
-    if enabled_letters:
+    if enabled_letters_up:
         let_idx_list = gen_random_index_list(sect_len + 1, len(letters))
         for index in let_idx_list:
             final_pass.append(letters[index])
 
-    if enabled_letters:
+    if enabled_letters_low:
         let_idx_list = gen_random_index_list(sect_len + 1, len(letters))
         for index in let_idx_list:
             low_str = letters[index]
@@ -80,6 +105,9 @@ def gen_pass(sect_len: int,
         spec_idx_list = gen_random_index_list(sect_len + 1, len(spec_chars))
         for index in spec_idx_list:
             final_pass.append(spec_chars[index])
+     
+
+
 
     random.shuffle(final_pass)
 
@@ -90,9 +118,9 @@ def gen_pass(sect_len: int,
 
 
 def main():
-    rlist = collect_reqs()
-    slen = calculate_section_len(rlist)
-    print(gen_pass(slen, rlist[1], rlist[2], rlist[3]))
+    std_reqs = collect_reqs()
+    print(std_reqs)
+    print(gen_pass(std_reqs))
 
 
 if __name__ == '__main__':
