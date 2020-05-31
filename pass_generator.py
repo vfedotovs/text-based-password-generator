@@ -8,7 +8,7 @@ letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
 
 def gen_random_index_list(count: int, range_len: int) -> list:
     index_list = []
-    for i in range(1, count):
+    for i in range(count):
         x = random.randrange(1, range_len)
         index_list.append(x)
     return index_list
@@ -74,7 +74,7 @@ def gen_pass(requirements: list) -> str:
             diff = requirements[0] % sect_count
 
             if diff > 0:
-               let_idx_list = gen_random_index_list(diff - 1, len(letters))
+               let_idx_list = gen_random_index_list(diff , len(letters))
                for index in let_idx_list:
                    final_pass.append(letters[index])
         
@@ -85,24 +85,24 @@ def gen_pass(requirements: list) -> str:
 
     # print("section len:", sect_len)  # for debugging
     if enabled_numbers:
-        num_idx_list = gen_random_index_list(sect_len + 1, len(numbers))
+        num_idx_list = gen_random_index_list(sect_len , len(numbers))
         for index in num_idx_list:
             final_pass.append(numbers[index])
 
     if enabled_letters_up:
-        let_idx_list = gen_random_index_list(sect_len + 1, len(letters))
+        let_idx_list = gen_random_index_list(sect_len , len(letters))
         for index in let_idx_list:
             final_pass.append(letters[index])
 
     if enabled_letters_low:
-        let_idx_list = gen_random_index_list(sect_len + 1, len(letters))
+        let_idx_list = gen_random_index_list(sect_len , len(letters))
         for index in let_idx_list:
             low_str = letters[index]
             low = low_str.lower()
             final_pass.append(low)
 
     if enabled_spec_chars:
-        spec_idx_list = gen_random_index_list(sect_len + 1, len(spec_chars))
+        spec_idx_list = gen_random_index_list(sect_len , len(spec_chars))
         for index in spec_idx_list:
             final_pass.append(spec_chars[index])
      
