@@ -1,46 +1,12 @@
 from my_modules import gen_random_index_list
 from my_modules import shuffle_pass
-
+from my_modules import collect_pwd_reqs
+from my_modules import get_pwd_len
 
 spec_chars = ['!', '"', '£', '$', '%', '&', '*', '(', ')', '_', '+']
 numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
            'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
-
-
-def collect_reqs() -> list:
-    req_list = []
-    pwd_len = int(input("Choose password lenght(characters): "))
-    include_letter_up = str(
-        input("Do you want include upper case letters (y/n)?:"))
-    include_letter_low = str(
-        input("Do you want include lower case letters (y/n)?:"))
-    include_nums = str(input("Do you want include numbers (y/n)?:"))
-    include_specials = str(
-        input("Do you want include special characters (y/n)?:"))
-
-    req_list.append(pwd_len)
-    if include_letter_up == 'y':
-        req_list.append(True)
-    else:
-        req_list.append(False)
-
-    if include_letter_low == 'y':
-        req_list.append(True)
-    else:
-        req_list.append(False)
-
-    if include_nums == 'y':
-        req_list.append(True)
-    else:
-        req_list.append(False)
-
-    if include_specials == 'y':
-        req_list.append(True)
-    else:
-        req_list.append(False)
-    #            pass_len , up, low, nums, special
-    return req_list  # [8, True, True, True, True]
 
 
 def gen_pass(requirements: list) -> str:
@@ -103,7 +69,11 @@ def gen_pass(requirements: list) -> str:
 
 
 def main():
-    std_reqs = collect_reqs()
+    new_std_input = []
+    pass_len = get_pwd_len()
+    new_std_input.append(pass_len)
+
+    std_reqs = collect_pwd_reqs()
     print("Debug info:", std_reqs)
     print("Debug info:", gen_pass(std_reqs))
     raw_pass = gen_pass(std_reqs)
