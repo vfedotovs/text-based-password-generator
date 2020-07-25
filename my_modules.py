@@ -93,6 +93,29 @@ def get_pwd_len() -> int:
             pwd_len = int(input("Choose password lenght(characters): "))
 
 
-def calc_sect_len(req_list: list) -> int:
+def get_char_types() -> list:
+    "Function collects input from STDIN"
+    "No error checking for invalid inputs TODO fix that"
+    req_list = []
+    include_letter_up = str(
+        input("Do you want include upper case letters (y/n)?:"))
+    include_letter_low = str(
+        input("Do you want include lower case letters (y/n)?:"))
+    include_nums = str(input("Do you want include numbers (y/n)?:"))
+    include_specials = str(
+        input("Do you want include special characters (y/n)?:"))
+
+    req_list.append(include_letter_up)
+    req_list.append(include_letter_low)
+    req_list.append(include_nums)
+    req_list.append(include_specials)
+    return req_list
+
+
+def calc_sect_len(req_list: list, pass_len: int) -> int:
     "Function calculates section lenght for each character type"
-    pass
+    sect_len = 0
+    for req in req_list:
+        if req is True:
+            sect_len += 1
+    return pass_len // sect_len

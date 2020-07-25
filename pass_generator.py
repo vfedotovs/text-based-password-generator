@@ -2,11 +2,23 @@ from my_modules import gen_random_index_list
 from my_modules import shuffle_pass
 from my_modules import collect_pwd_reqs
 from my_modules import get_pwd_len
+from my_modules import get_char_types
 
 spec_chars = ['!', '"', '£', '$', '%', '&', '*', '(', ')', '_', '+']
 numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
            'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+
+
+def convert_char_types(choices: list) -> list:
+    "Function converts y/n to True/False list"
+    converted_list = []
+    for choice in choices:
+        if choice == 'y':
+            converted_list.append(True)
+        else:
+            converted_list.append(False)
+    return converted_list
 
 
 def gen_pass(requirements: list) -> str:
@@ -72,11 +84,16 @@ def main():
     new_std_input = []
     pass_len = get_pwd_len()
     new_std_input.append(pass_len)
+    raw_char_types = get_char_types()
+    char_types = convert_char_types(raw_char_types)
+    for chr_type in char_types:
+        new_std_input.append(chr_type)
+    # TODO split gen pass funtion to get section len and gen_characters
 
-    std_reqs = collect_pwd_reqs()
-    print("Debug info:", std_reqs)
-    print("Debug info:", gen_pass(std_reqs))
-    raw_pass = gen_pass(std_reqs)
+    print("Debug:", new_std_input)
+    print("Debug:", gen_pass(new_std_input))
+
+    raw_pass = gen_pass(new_std_input)
     print(shuffle_pass(raw_pass))
 
 
