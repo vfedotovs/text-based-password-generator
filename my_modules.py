@@ -1,6 +1,12 @@
 import random
 
 
+spec_chars = ['!', '"', '£', '$', '%', '&', '*', '(', ')', '_', '+']
+numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
+           'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+
+
 def gen_random_index_list(count: int, range_len: int) -> list:
     "Function to generate list  of random numbers"
     index_list = []
@@ -67,10 +73,59 @@ def get_char_types() -> list:
     return req_list
 
 
-def calc_sect_len(req_list: list, pass_len: int) -> int:
+def calc_sect_len(req_list: list) -> list:
     "Function calculates section lenght for each character type"
-    sect_len = 0
+    sect_count = 0
+    count_len_diff = []
+    pass_len = req_list[0]
+
     for req in req_list:
         if req is True:
-            sect_len += 1
-    return pass_len // sect_len
+            sect_count += 1
+
+    sect_len = pass_len // sect_count
+    diff = pass_len - (sect_count * sect_len)
+
+    count_len_diff.append(sect_count)
+    count_len_diff.append(sect_len)
+    count_len_diff.append(diff)
+
+    return count_len_diff
+
+
+def pass_generator(requirements: list, count_len_diff: list) -> str:
+    # sect_count = count_len_diff[0]
+    sect_len = count_len_diff[1]
+    diff = count_len_diff[2]
+    final_pass = []
+
+    if diff > 0:
+        let_idx_list = gen_random_index_list(diff, len(letters))
+        for index in let_idx_list:
+            final_pass.append(letters[index])
+
+    if requirements[3]:
+        num_idx_list = gen_random_index_list(sect_len, len(numbers))
+        for index in num_idx_list:
+            final_pass.append(numbers[index])
+
+    # enabled_letters_up
+    if requirements[1]:
+        let_idx_list = gen_random_index_list(sect_len, len(letters))
+        for index in let_idx_list:
+            final_pass.append(letters[index])
+
+    # enabled_letters_low
+    if requirements[2]:
+        let_idx_list = gen_random_index_list(sect_len, len(letters))
+        for index in let_idx_list:
+            low_str = letters[index]
+            low = low_str.lower()
+            final_pass.append(low)
+
+    if requirements[4]:
+        spec_idx_list = gen_random_index_list(sect_len, len(spec_chars))
+        for index in spec_idx_list:
+            final_pass.append(spec_chars[index])
+
+    return final_pass
